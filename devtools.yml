@@ -3,6 +3,6 @@
   user: root
   gather_facts: true
   roles:
-    - roles/vpnministerio
+    - roles/polipo
 
 #  vars_files: ["group_vars/passwords.yml"]

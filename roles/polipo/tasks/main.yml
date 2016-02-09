@@ -1,1 +1,3 @@
 - name: Instalar polipo
+  file: path=/tmp/test state=touch mode=0555
+

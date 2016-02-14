@@ -7,7 +7,7 @@
 - name: copio_archivo_configuracion_phpmyadmin_2
   copy: src="files/config-dbservers.php" dest="/data/phpmyadmin/etc/config-dbservers.php"
 
-- name: instalar_docker_registry
+- name: instalar_phpmyadmin
   docker:
     name: phpmyadmin
     image: "wnameless/mysql-phpmyadmin:latest"
@@ -19,5 +19,4 @@
     - "/data/phpmyadmin/etc/config.inc.php:/etc/phpmyadmin/config.inc.php"
     env:
         VIRTUAL_HOST: phpmyadmin.dev-tools.msgc.gcba
-        VIRTUAL_PORT: 8003
     restart_policy: always

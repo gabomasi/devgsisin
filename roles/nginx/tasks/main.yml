@@ -1,0 +1,10 @@
+- name: instalar_nginx_proxy
+  docker:
+    name: nginx_proxy
+    image: "jwilder/nginx-proxy"
+    state: started
+    volumes:
+    - "/var/run/docker.sock:/tmp/docker.sock:ro"
+    ports:
+    - "80:80"
+    restart_policy: always

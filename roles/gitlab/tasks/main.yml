@@ -1,0 +1,44 @@
+# Opcional podría agregar esto: http://kanban.leanlabs.io/docs/installation/docker.html 
+- name: instalar_gitlab_postgres
+  docker:
+    name: "gitlab-postgresql"
+    image: "sameersbn/postgresql:9.4-12"
+    state: reloaded
+    volumes:
+    - "/data/gitlab-postgresql:/var/lib/postgresql"
+    env:
+        DB_NAME: gitlabhq_production
+        DB_USER: gitlab
+        DB_PASSWORD: "{{ redis_postgresql_db_password }}"
+    restart_policy: always
+
+- name: instalar_gitlab_redis
+  docker:
+    name: "gitlab-redis"
+    image: "sameersbn/redis:latest"
+    state: reloaded
+    volumes:
+    - "/data/gitlab-redis:/var/lib/redis"
+    restart_policy: always
+
+- name: instalar_gitlab
+  docker:
+    name: "gitlab"
+    image: "sameersbn/gitlab:8.4.4"
+    state: reloaded
+    volumes:
+    - "/data/gitlab-repos:/home/git/data"
+    ports:
+    - "10022:22"
+    - "10080:8002"
+    links:
+    - "gitlab-postgresql:postgresql"
+    - "gitlab-redis:redisio"
+    env:
+        GITLAB_PORT: 10080
+        GITLAB_SSH_PORT: 10022
+        GITLAB_SECRETS_DB_KEY_BASE: "dasdjhnjeknfsdjklf65423523j5nbjfsd8732452354fg"
+        VIRTUAL_HOST: gitlab.dev-tools.msgc.gcba
+        VIRTUAL_PORT: 8002
+    restart_policy: always
+

@@ -9,7 +9,7 @@
     env:
         DB_NAME: gitlabhq_production
         DB_USER: gitlab
-        DB_PASSWORD: "{{ redis_postgresql_db_password }}"
+        DB_PASS: "{{ redis_postgresql_db_password }}"
     restart_policy: always
 
 - name: instalar_gitlab_redis
@@ -29,15 +29,15 @@
     volumes:
     - "/data/gitlab-repos:/home/git/data"
     ports:
-    - "10022:22"
-    - "10080:8002"
+    - "22:22"
+    - "8002:80"
     links:
     - "gitlab-postgresql:postgresql"
     - "gitlab-redis:redisio"
     env:
-        GITLAB_PORT: 10080
-        GITLAB_SSH_PORT: 10022
-        GITLAB_SECRETS_DB_KEY_BASE: "dasdjhnjeknfsdjklf65423523j5nbjfsd8732452354fg"
+        GITLAB_PORT: 8002
+        GITLAB_SSH_PORT: 22
+        GITLAB_SECRETS_DB_KEY_BASE: "{{ gitlab_secrets_db_key_base }}"
         VIRTUAL_HOST: gitlab.dev-tools.msgc.gcba
         VIRTUAL_PORT: 8002
     restart_policy: always

@@ -1,0 +1,10 @@
+- name: instalar_docker_registry
+  docker:
+    name: docker_registry
+    image: "registry:2"
+    state: started
+    volumes:
+    - "/data/docker-registry:/var/lib/registry"
+    ports:
+    - "5000:5000"
+    restart_policy: always

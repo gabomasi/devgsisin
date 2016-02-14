@@ -9,4 +9,5 @@
     - roles/docker_registry
     - roles/nginx
     - roles/gitlab
+    - roles/phpmyadmin
   vars_files: ["group_vars/passwords.yml"]

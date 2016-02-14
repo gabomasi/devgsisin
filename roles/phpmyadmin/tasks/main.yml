@@ -1,0 +1,23 @@
+- name: aseguro_direectorio_data_pyhpmyadmin_existe
+  file: path=/data/phpmyadmin/etc state=directory
+
+- name: copio_archivo_configuracion_phpmyadmin_1
+  copy: src="files/config.inc.php" dest="/data/phpmyadmin/etc/config.inc.php"
+
+- name: copio_archivo_configuracion_phpmyadmin_2
+  copy: src="files/config-dbservers.php" dest="/data/phpmyadmin/etc/config-dbservers.php"
+
+- name: instalar_docker_registry
+  docker:
+    name: phpmyadmin
+    image: "wnameless/mysql-phpmyadmin:latest"
+    state: reloaded
+    ports:
+    - "8003:80"
+    volumes:
+    - "/data/phpmyadmin/etc/config-dbservers.php:/etc/phpmyadmin/config-dbservers.php"
+    - "/data/phpmyadmin/etc/config.inc.php:/etc/phpmyadmin/config.inc.php"
+    env:
+        VIRTUAL_HOST: phpmyadmin.dev-tools.msgc.gcba
+        VIRTUAL_PORT: 8003
+    restart_policy: always

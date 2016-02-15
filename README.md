@@ -13,4 +13,3 @@ TODO:
 ====
 - Install sentry
 - Install http://kanban.leanlabs.io/docs/installation/docker.html
-- Add ascii art for login prompt

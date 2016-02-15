@@ -11,6 +11,5 @@
     - roles/gitlab
     - roles/phpmyadmin
     - roles/polipo
-  tasks:
-    - hostname: name="dev-tools"
+    - roles/host_goodies
   vars_files: ["group_vars/passwords.yml"]

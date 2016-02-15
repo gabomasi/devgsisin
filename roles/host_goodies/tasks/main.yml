@@ -1,0 +1,8 @@
+- name: configurar_hostname
+  hostname: name="dev-tools"
+
+- name: configurar_motd
+  copy: src="files/motd" dest="/etc/motd"
+
+
+

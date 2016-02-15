@@ -1,3 +1,8 @@
-- name: Instalar polipo
-  file: path=/tmp/test state=touch mode=0555
+- name: instalar_polipo
+  apt: name=polipo state=present install_recommends=no
+
+- name: configurar_polipo
+  copy: src="files/config" dest="/etc/polipo/config"
+
+
 

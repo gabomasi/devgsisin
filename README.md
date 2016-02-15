@@ -13,6 +13,4 @@ TODO:
 ====
 - Install sentry
 - Install http://kanban.leanlabs.io/docs/installation/docker.html
-- Configure hostname
 - Add ascii art for login prompt
-- Install polipo for parent proxy

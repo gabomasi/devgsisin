@@ -1,4 +1,5 @@
 [devtools]
-vagrant ansible_host=localhost ansible_ssh_port=2223 user=root nickname=devtools
+#vagrant ansible_host=localhost ansible_ssh_port=2223 user=root nickname=devtools
+nuevodevtools ansible_host=nuevodevtools
 #localhost ansible_connection=local
 #localhost ansible_ssh_port=1223 nickname=test_local branch=master

@@ -4,5 +4,13 @@
   user: root
   gather_facts: true
   roles:
+    - roles/docker 
+    - { role: angstwad.docker_ubuntu, docker_opts: '-g /data/docker' }
+    - roles/docker_registry
+    - roles/nginx
+    - roles/gitlab
+    - roles/phpmyadmin
     - roles/polipo
+  tasks:
+    - hostname: name="dev-tools"
   vars_files: ["group_vars/passwords.yml"]

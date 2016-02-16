@@ -1,4 +1,4 @@
-- name: aseguro_direectorio_data_pyhpmyadmin_existe
+- name: aseguro_directorio_data_pyhpmyadmin_existe
   file: path=/data/phpmyadmin/etc state=directory
 
 - name: copio_archivo_configuracion_phpmyadmin_1

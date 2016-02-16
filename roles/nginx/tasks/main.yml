@@ -1,10 +1,17 @@
+- name: aseguro_directorio_data_nginx_existe
+  file: path=/data/nginx/etc state=directory
+
+- name: copio_archivo_configuracion_phpmyadmin_1
+  copy: src="files/client_max_body_size.conf" dest="/data/nginx/etc/client_max_body_size.conf"
+
 - name: instalar_nginx_proxy
   docker:
     name: nginx_proxy
     image: "jwilder/nginx-proxy"
-    state: started
+    state: reloaded
     volumes:
     - "/var/run/docker.sock:/tmp/docker.sock:ro"
+    - "/data/nginx/etc/client_max_body_size.conf:/etc/nginx/conf.d/client_max_body_size.conf"
     ports:
     - "80:80"
     restart_policy: always

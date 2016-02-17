@@ -5,6 +5,6 @@
   gather_facts: true
   roles:
     - roles/docker
-    - { role: angstwad.docker_ubuntu, docker_opts: '-g /data/docker' }
+    - { role: angstwad.docker_ubuntu, docker_opts: '-g /data/docker --insecure-registry registry.dev-tools.msgc.gcba' }
     - roles/nginx
   vars_files: ["group_vars/passwords.yml"]

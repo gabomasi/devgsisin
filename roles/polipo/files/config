@@ -1,10 +1,5 @@
-# This file only needs to list configuration variables that deviate
-# from the default values.  See /usr/share/doc/polipo/examples/config.sample
-# and "polipo -v" for variables you can tweak and further information.
-
 logSyslog = true
 logFile = /var/log/polipo/polipo.log
-
+dnsUseGethostbyname = true
 proxyAddress = "0.0.0.0"
-#socksParentProxy = "localhost:1997"
-#socksProxyType = socks5
+dnsNameServer = "10.47.4.109"

@@ -3,3 +3,4 @@ logFile = /var/log/polipo/polipo.log
 dnsUseGethostbyname = true
 proxyAddress = "0.0.0.0"
 dnsNameServer = "10.47.4.109"
+parentProxy=10.200.72.32:8080

@@ -12,4 +12,5 @@
     - roles/phpmyadmin
     - roles/polipo
     - roles/host_goodies
+    - roles/tuleap
   vars_files: ["group_vars/passwords.yml"]

@@ -1,0 +1,71 @@
+- name: instalar_taiga_data
+  docker:
+    name: "data"
+    image: "tianon/true"
+    state: reloaded
+    restart_policy: always
+    volumes:
+    - "/data/taiga_data/postgresql:/var/lib/postgresql/data"
+    - "/data/taiga_data/media:/usr/local/taiga/media"
+    - "/data/taiga_data/static:/usr/local/taiga/static"
+    - "/data/taiga_data/logs:/usr/local/taiga/logs"
+
+- name: instalar_taiga_db
+  docker:
+    name: "taigadb"
+    image: "postgres"
+    state: reloaded
+    restart_policy: always
+    volumes_from:
+    - "data"
+    env:
+        POSTGRES_USER: taiga
+        POSTGRES_PASSWORD: Un1c0rn
+
+- name: instalar_taiga_back
+  docker:
+    name: "taigaback"
+    image: "beevelop/taiga-back"
+    state: reloaded
+    restart_policy: always
+    links:
+    - "taigadb:postgres"
+    volumes_from:
+    - "data"
+    env:
+        SECRET_KEY: Un1c0rns_4r3_4w3s0m3
+        PUBLIC_REGISTER_ENABLED: "True"
+        FEEDBACK_ENABLED: "True"
+        FEEDBACK_EMAIL: unicorn@example.com
+        STATS_ENABLED: "False"
+        FRONT_SITEMAP_ENABLED: "True"
+        SAMPLE_DATA: "False"
+        DEBUG_ENTRYPOINT: "True"
+        DEBUG: "True"
+        TEMPLATE_DEBUG: "True"
+        EMAIL_USE_TLS: "True"
+        EMAIL_HOST: smtp.gmail.com
+        EMAIL_PORT: 587
+        EMAIL_HOST_USER: unicorn@gmail.com
+        EMAIL_HOST_PASSWORD: yourpassword
+        DEFAULT_FROM_EMAIL: noreply@taiga.example.com
+
+- name: instalar_taiga_front
+  docker:
+    name: "taigafront"
+    image: "beevelop/taiga-front"
+    links:
+    - "taigaback"
+    volumes_from:
+    - "data"
+    restart_policy: always
+    ports:
+    - "80"
+    env:
+        DEFAULT_LANGUAGE: es
+        PRIVACY_POLICY_URL: https://taiga.example.com/privacy_policy
+        TERMS_OF_SERVICE_URL: https://taiga.example.com/tos
+        DEBUG_ENTRYPOINT: "True"
+        DEBUG: "False"
+        VIRTUAL_HOST: taiga.dev-tools.msgc.gcba
+

@@ -1,6 +1,6 @@
 - name: instalar_tuleap
   docker:
-    name: "tuleap2"
+    name: "tuleap"
     image: "enalean/tuleap-aio"
     state: reloaded
     volumes:
@@ -10,7 +10,7 @@
     - "443"
     - "80"
     env:
-        VIRTUAL_HOST: tuleap2.dev-tools.msgc.gcba
+        VIRTUAL_HOST: tuleap.dev-tools.msgc.gcba
         VIRTUAL_PROTO: https
         VIRTUAL_PORT: 443
     restart_policy: always

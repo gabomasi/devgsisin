@@ -44,8 +44,8 @@
         SMTP_PORT: "{{ smtp_port }}"
         SMTP_USER: "{{ smtp_user }}"
         SMTP_PASS: "{{ smtp_pass }}"
-        GITLAB_EMAIL: "{{ gitlab_email }}"
-        GITLAB_EMAIL_REPLY_TO: "{{ gitlab_email_reply_to }}"
+        GITLAB_EMAIL: "{{ default_email }}"
+        GITLAB_EMAIL_REPLY_TO: "{{ default_email_reply_to }}"
         VIRTUAL_HOST: gitlab.dev-tools.msgc.gcba
         VIRTUAL_PORT: 80
     restart_policy: always

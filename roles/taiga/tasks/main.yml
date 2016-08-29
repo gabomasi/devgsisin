@@ -19,13 +19,14 @@
     volumes_from:
     - "data"
     env:
-        POSTGRES_USER: taiga
-        POSTGRES_PASSWORD: Un1c0rn
+        POSTGRES_USER: "{{ taiga_postgres_user }}"
+        POSTGRES_PASSWORD: "{{ taiga_postgres_password }}"
 
 - name: instalar_taiga_back
   docker:
     name: "taigaback"
-    image: "beevelop/taiga-back"
+    image: "htdvisser/taiga-back:stable"
+    hostname: "taiga.dev-tools.msgc.gcba"
     state: reloaded
     restart_policy: always
     links:
@@ -34,26 +35,20 @@
     - "data"
     env:
         SECRET_KEY: Un1c0rns_4r3_4w3s0m3
-        PUBLIC_REGISTER_ENABLED: "True"
-        FEEDBACK_ENABLED: "True"
-        FEEDBACK_EMAIL: unicorn@example.com
-        STATS_ENABLED: "False"
-        FRONT_SITEMAP_ENABLED: "True"
-        SAMPLE_DATA: "False"
-        DEBUG_ENTRYPOINT: "True"
-        DEBUG: "True"
-        TEMPLATE_DEBUG: "True"
+        DEBUG: "False"
         EMAIL_USE_TLS: "True"
-        EMAIL_HOST: smtp.gmail.com
-        EMAIL_PORT: 587
-        EMAIL_HOST_USER: unicorn@gmail.com
-        EMAIL_HOST_PASSWORD: yourpassword
-        DEFAULT_FROM_EMAIL: noreply@taiga.example.com
+        SMTP_DOMAIN: "{{ smtp_domain }}"
+        EMAIL_HOST: "{{ smtp_host }}"
+        EMAIL_PORT: "{{ smtp_port }}"
+        EMAIL_HOST_USER: "{{ smtp_user }}"
+        EMAIL_HOST_PASSWORD: "{{ smtp_pass }}"
+        DEFAULT_FROM_EMAIL: "{{ default_email_reply_to }}"
 
 - name: instalar_taiga_front
   docker:
     name: "taigafront"
-    image: "beevelop/taiga-front"
+    image: "htdvisser/taiga-front-dist:stable"
+    hostname: "taiga.dev-tools.msgc.gcba"
     links:
     - "taigaback"
     volumes_from:
@@ -63,9 +58,4 @@
     - "80"
     env:
         DEFAULT_LANGUAGE: es
-        PRIVACY_POLICY_URL: https://taiga.example.com/privacy_policy
-        TERMS_OF_SERVICE_URL: https://taiga.example.com/tos
-        DEBUG_ENTRYPOINT: "True"
-        DEBUG: "False"
         VIRTUAL_HOST: taiga.dev-tools.msgc.gcba
-

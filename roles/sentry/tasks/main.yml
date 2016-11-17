@@ -1,0 +1,70 @@
+- name: instalar_redis
+  docker:
+    name: "sentry_redis"
+    image: "redis"
+    state: reloaded
+    restart_policy: always
+
+- name: instalar_postgres
+  docker:
+    name: "sentry_postgres"
+    image: "postgres:9.4"
+    env:
+      POSTGRES_USER: "{{ sentry_postgres_user }}"
+      POSTGRES_PASSWORD: "{{ sentry_postgres_user }}"
+      POSTGRES_DBNAME: "{{ sentry_postgres_dbname }}"
+      POSTGRES_DBUSER: "{{ sentry_postgres_dbuser }}"
+      POSTGRES_DBPASS: "{{ sentry_postgres_dbpassword }}"
+    volumes:
+    - "/data/sentry/postgre:/var/lib/postgresql/data:rw"
+
+- name: instalar_sentry
+  docker:
+    name: "sentry"
+    image: "sentry:latest"
+    links:
+    - "sentry_redis"
+    - "sentry_postgres"
+    ports:
+    - "9000"
+    stdin_open: true
+    tty: true
+    command: "python -m SimpleHTTPServer"
+    env:
+        VIRTUAL_HOST: sentry.dev-tools.msgc.gcba
+        VIRTUAL_PORT: 9000
+        SENTRY_SECRET_KEY: "{{ sentry_secret }}"
+        SENTRY_POSTGRES_HOST: sentry_postgres
+        SENTRY_DB_USER: "{{ sentry_postgres_dbuser }}"
+        SENTRY_DB_PASSWORD: "{{ sentry_postgres_dbpassword }}"
+        SENTRY_REDIS_HOST: sentry_redis
+
+- name: instalar_celery_beat
+  docker:
+    name: "sentry_celery_beat"
+    image: "sentry:latest"
+    links:
+    - "sentry_redis"
+    - "sentry_postgres"
+    command: "sentry celery beat"
+    env:
+        SENTRY_SECRET_KEY: "{{ sentry_secret }}"
+        SENTRY_POSTGRES_HOST: sentry_postgres
+        SENTRY_DB_USER: "{{ sentry_postgres_dbuser }}"
+        SENTRY_DB_PASSWORD: "{{ sentry_postgres_dbpassword }}"
+        SENTRY_REDIS_HOST: sentry_redis
+
+- name: instalar_celery_worker
+  docker:
+    name: "sentry_celery_worker"
+    image: "sentry:latest"
+    links:
+    - "sentry_redis"
+    - "sentry_postgres"
+    command: "sentry celery worker"
+    env:
+        SENTRY_SECRET_KEY: "{{ sentry_secret }}"
+        SENTRY_POSTGRES_HOST: sentry_postgres
+        SENTRY_DB_USER: "{{ sentry_postgres_dbuser }}"
+        SENTRY_DB_PASSWORD: "{{ sentry_postgres_dbpassword }}"
+        SENTRY_REDIS_HOST: sentry_redis

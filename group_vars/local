@@ -1,3 +1,2 @@
-taiga_data_path: /home/mbianchi/Escritorio/taiga_local/data/taiga_data
 taiga_hostname: localhost
 taiga_front_port: "80:"

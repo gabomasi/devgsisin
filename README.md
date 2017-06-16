@@ -1,7 +1,15 @@
 Requirements
 =============
 
-Ansible >= 2.0
+$ docker-compose --version
+docker-compose version 1.13.0, build 1719ceb
+
+$ docker --version
+Docker version 17.05.0-ce, build 89658be
+
+$ ansible --version
+ansible 2.3.0.0
+
 
 Then:
 

@@ -6,3 +6,6 @@
 
 [devapps]
 10.47.4.62
+
+[local]
+localhost ansible_connection=local

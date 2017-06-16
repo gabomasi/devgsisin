@@ -1,0 +1,6 @@
+---
+- hosts: local
+  gather_facts: true
+  roles:
+      - roles/taiga
+  vars_files: ["group_vars/passwords.yml"]

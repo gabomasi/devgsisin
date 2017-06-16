@@ -1,61 +1,59 @@
-- name: instalar_taiga_data
-  docker:
-    name: "data"
-    image: "tianon/true"
-    state: reloaded
+- name: instalar_taiga_db
+  docker_container:
+    name: taigadb
+    image: postgres:9.5
+    state: started
     restart_policy: always
     volumes:
-    - "/data/taiga_data/postgresql:/var/lib/postgresql/data"
-    - "/data/taiga_data/media:/usr/local/taiga/media"
-    - "/data/taiga_data/static:/usr/local/taiga/static"
-    - "/data/taiga_data/logs:/usr/local/taiga/logs"
-
-- name: instalar_taiga_db
-  docker:
-    name: "taigadb"
-    image: "postgres"
-    state: reloaded
-    restart_policy: always
-    volumes_from:
-    - "data"
+      - "{{ taiga_data_path }}/postgresql:/var/lib/postgresql/data"
     env:
         POSTGRES_USER: "{{ taiga_postgres_user }}"
         POSTGRES_PASSWORD: "{{ taiga_postgres_password }}"
 
 - name: instalar_taiga_back
-  docker:
-    name: "taigaback"
-    image: "htdvisser/taiga-back:stable"
-    hostname: "taiga.dev-tools.msgc.gcba"
-    state: reloaded
+  docker_container:
+    name: taigaback
+    image: bartoszgadzala/taiga-back:3.1.0
+    hostname: "{{ taiga_hostname }}"
+    state: started
     restart_policy: always
     links:
-    - "taigadb:postgres"
-    volumes_from:
-    - "data"
+      - taigadb
+    volumes:
+      - "{{ taiga_data_path }}/media:/usr/local/taiga/media"
+      - "{{ taiga_data_path }}/static:/usr/local/taiga/static"
+      - "{{ taiga_data_path }}/logs:/usr/local/taiga/logs"
     env:
-        SECRET_KEY: Un1c0rns_4r3_4w3s0m3
-        DEBUG: "False"
-        EMAIL_USE_TLS: "True"
-        SMTP_DOMAIN: "{{ smtp_domain }}"
-        EMAIL_HOST: "{{ smtp_host }}"
-        EMAIL_PORT: "{{ smtp_port }}"
-        EMAIL_HOST_USER: "{{ smtp_user }}"
-        EMAIL_HOST_PASSWORD: "{{ smtp_pass }}"
-        DEFAULT_FROM_EMAIL: "{{ default_email_reply_to }}"
+      HOSTNAME: "{{ taiga_hostname }}"
+      SECRET_KEY: Un1c0rns_4r3_4w3s0m3
+      DEBUG: "False"
+      EMAIL_USE_TLS: "True"
+      SMTP_DOMAIN: "{{ smtp_domain }}"
+      EMAIL_HOST: "{{ smtp_host }}"
+      EMAIL_PORT: "{{ smtp_port }}"
+      EMAIL_HOST_USER: "{{ smtp_user }}"
+      EMAIL_HOST_PASSWORD: "{{ smtp_pass }}"
+      DEFAULT_FROM_EMAIL: "{{ default_email_reply_to }}"
+      POSTGRES_DB_NAME: taiga
+      POSTGRES_HOST: taigadb
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: "{{ taiga_postgres_user }}"
+      POSTGRES_PASSWORD: "{{ taiga_postgres_password }}"
 
 - name: instalar_taiga_front
-  docker:
-    name: "taigafront"
-    image: "htdvisser/taiga-front-dist:stable"
-    hostname: "taiga.dev-tools.msgc.gcba"
+  docker_container:
+    name: taigafront
+    image: bartoszgadzala/taiga-front:3.1.0
+    hostname: "{{ taiga_hostname }}"
     links:
-    - "taigaback"
-    volumes_from:
-    - "data"
+      - taigaback
+    volumes:
+      - "{{ taiga_data_path }}/media:/usr/local/taiga/media"
+      - "{{ taiga_data_path }}/static:/usr/local/taiga/static"
     restart_policy: always
     ports:
-    - "80"
+    - "{{ taiga_front_port }}80"
     env:
         DEFAULT_LANGUAGE: es
-        VIRTUAL_HOST: taiga.dev-tools.msgc.gcba
+        VIRTUAL_HOST: "{{ taiga_hostname }}"
+        TAIGABACK_PORT_8000_TCP_ADDR: taigaback

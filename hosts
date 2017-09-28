@@ -5,7 +5,7 @@
 10.47.4.151 ansible_ssh_port=1223
 
 [devapps]
-10.47.4.62
+10.47.4.150
 
 [local]
 localhost ansible_connection=local

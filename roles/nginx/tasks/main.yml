@@ -8,14 +8,15 @@
   copy: src="files/connection_header.conf" dest="/data/nginx/etc/connection_header.conf"
 
 - name: instalar_nginx_proxy
-  docker:
+  docker_container:
     name: nginx_proxy
     image: "jwilder/nginx-proxy"
-    state: reloaded
+    state: started
+    restart: true
+    restart_policy: always
     volumes:
     - "/var/run/docker.sock:/tmp/docker.sock:ro"
     - "/data/nginx/etc/client_max_body_size.conf:/etc/nginx/conf.d/client_max_body_size.conf"
     - "/data/nginx/etc/connection_header.conf:/etc/nginx/conf.d/connection_header.conf"
     ports:
     - "80:80"
-    restart_policy: always

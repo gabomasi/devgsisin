@@ -1,13 +1,17 @@
 - name: instalar_docker_registry
-  docker:
+  docker_container:
     name: docker_registry
-    image: "registry:2"
-    state: reloaded
+    image: "registry:2.6.2"
+    state: started
+    recreate: true
     volumes:
     - "/data/docker-registry:/var/lib/registry"
-    ports:
+    published_ports:
     - "5000:5000"
     env:
         VIRTUAL_HOST: registry.dev-tools.msgc.gcba
         VIRTUAL_PORT: 5000
+        REGISTRY_STORAGE_DELETE_ENABLED: true
     restart_policy: always
+    # networks:
+    #   - name: nginx_proxy

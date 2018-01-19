@@ -1,0 +1,20 @@
+- name: instalar_icinga
+  docker_container:
+    name: icinga
+    image: "jordan/icinga2:2.8.0"
+    hostname: icinga-container-dev-tools
+    state: started
+    volumes:
+    - "/data/icinga/icinga2/etc:/etc/icinga2:rw"
+    - "/data/icinga/icingaweb2:/etc/icingaweb2:rw"
+    - "/data/icinga/mysql:/var/lib/mysql:rw"
+    - "/data/icinga/icinga2/var:/var/lib/icinga2:rw"
+    env:
+        VIRTUAL_HOST: icinga.dev-tools.msgc.gcba
+        ICINGA_PASSWORD: "{{ icinga_mysql_pass_icinga }}"
+        ICINGAWEB2_PASSWORD: "{{ icinga_mysql_pass_icingaweb }}"
+        DIRECTOR_PASSWORD: "{{ icinga_mysql_pass_icingadirector }}"
+        IDO_PASSWORD: "{{ icinga_mysql_pass_ido }}"
+        ICINGAWEB2_ADMIN_USER: "{{ icinga_web_adminuser }}"
+        ICINGAWEB2_ADMIN_PASS: "{{ icinga_web_adminpass }}"
+    restart_policy: always

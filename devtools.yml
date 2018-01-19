@@ -12,6 +12,7 @@
     # - roles/phpmyadmin
     # - roles/polipo
     # - roles/host_goodies
-    - roles/taiga
+    # - roles/taiga
     # - roles/sentry
+     - roles/icinga
   vars_files: ["group_vars/passwords.yml"]

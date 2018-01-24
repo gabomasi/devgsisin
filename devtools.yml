@@ -13,6 +13,9 @@
     # - roles/polipo
     # - roles/host_goodies
     # - roles/taiga
-    # - roles/sentry
-     - roles/icinga
+    - roles/sentry
+    #  - roles/icinga
   vars_files: ["group_vars/passwords.yml"]
+  vars:
+    sentry_create_user: false
+    sentry_workers_count: 2

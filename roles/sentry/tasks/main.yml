@@ -1,70 +1,120 @@
-- name: instalar_redis
-  docker:
-    name: "sentry_redis"
-    image: "redis"
-    state: reloaded
-    restart_policy: always
+- name: Crear red sentry
+  docker_network:
+    name: sentry
+    state: present
 
-- name: instalar_postgres
-  docker:
-    name: "sentry_postgres"
-    image: "postgres:9.4"
+- name: Instalar redis para sentry
+  docker_container:
+    image: redis:4.0-alpine
+    name: sentry-redis
+    hostname: sentry-redis
+    state: started
+    restart_policy: always
+    networks:
+      - name: sentry
+
+- name: Instalar postgres
+  docker_container:
+    image: postgres:10.1-alpine
+    name: sentry-postgres
+    hostname: sentry-postgres
+    state: started
+    restart_policy: always
+    networks:
+      - name: sentry
     env:
       POSTGRES_USER: "{{ sentry_postgres_user }}"
-      POSTGRES_PASSWORD: "{{ sentry_postgres_user }}"
-      POSTGRES_DBNAME: "{{ sentry_postgres_dbname }}"
-      POSTGRES_DBUSER: "{{ sentry_postgres_dbuser }}"
-      POSTGRES_DBPASS: "{{ sentry_postgres_dbpassword }}"
+      POSTGRES_PASSWORD: "{{ sentry_postgres_password }}"
+      POSTGRES_DB: "{{ sentry_postgres_dbname }}"
     volumes:
-    - "/data/sentry/postgre:/var/lib/postgresql/data:rw"
+    - /data/sentry/postgres:/var/lib/postgresql/data:rw
 
-- name: instalar_sentry
-  docker:
-    name: "sentry"
-    image: "sentry:latest"
+- name: Correr sentry upgrade
+  docker_container:
+    image: sentry:8
+    name: sentry-upgrade
+    recreate: no
+    restart: no
+    state: started
+    cleanup: true
+    detach: false
+    networks:
+      - name: sentry
     links:
-    - "sentry_redis"
-    - "sentry_postgres"
+      - sentry-redis:redis
+      - sentry-postgres:postgres
+    command: sentry upgrade --noinput
+    env:
+      SENTRY_SECRET_KEY: "{{ sentry_secret }}"
+
+- name: Crear sentry superuser
+  docker_container:
+    image: sentry:8
+    name: sentry-createuser
+    recreate: no
+    restart: no
+    state: started
+    cleanup: true
+    detach: false
+    networks:
+      - name: sentry
+    links:
+      - sentry-redis:redis
+      - sentry-postgres:postgres
+    command: "sentry createuser --email {{ sentry_user }} --password {{ sentry_pass }} --superuser"
+    env:
+      SENTRY_SECRET_KEY: "{{ sentry_secret }}"
+  when: sentry_create_user
+
+
+- name: Correr sentry
+  docker_container:
+    image: sentry:8
+    name: sentry
+    hostname: sentry
+    state: started
+    restart_policy: always
+    networks:
+      - name: sentry
+    links:
+    - sentry-redis:redis
+    - sentry-postgres:postgres
     ports:
-    - "9000"
-    stdin_open: true
-    tty: true
-    command: "python -m SimpleHTTPServer"
+      - "9000"
     env:
-        VIRTUAL_HOST: sentry.dev-tools.msgc.gcba
-        VIRTUAL_PORT: 9000
-        SENTRY_SECRET_KEY: "{{ sentry_secret }}"
-        SENTRY_POSTGRES_HOST: sentry_postgres
-        SENTRY_DB_USER: "{{ sentry_postgres_dbuser }}"
-        SENTRY_DB_PASSWORD: "{{ sentry_postgres_dbpassword }}"
-        SENTRY_REDIS_HOST: sentry_redis
+      VIRTUAL_HOST: sentry.dev-tools.msgc.gcba
+      VIRTUAL_PORT: 9000
+      SENTRY_SECRET_KEY: "{{ sentry_secret }}"
 
-- name: instalar_celery_beat
-  docker:
-    name: "sentry_celery_beat"
-    image: "sentry:latest"
+- name: Correr celery beat
+  docker_container:
+    image: sentry:8
+    name: sentry-cron
+    hostname: sentry-cron
+    state: started
+    restart_policy: always
+    networks:
+      - name: sentry
     links:
-    - "sentry_redis"
-    - "sentry_postgres"
-    command: "sentry celery beat"
+    - sentry-redis:redis
+    - sentry-postgres:postgres
+    command: sentry run cron
     env:
-        SENTRY_SECRET_KEY: "{{ sentry_secret }}"
-        SENTRY_POSTGRES_HOST: sentry_postgres
-        SENTRY_DB_USER: "{{ sentry_postgres_dbuser }}"
-        SENTRY_DB_PASSWORD: "{{ sentry_postgres_dbpassword }}"
-        SENTRY_REDIS_HOST: sentry_redis
+      SENTRY_SECRET_KEY: "{{ sentry_secret }}"
 
-- name: instalar_celery_worker
-  docker:
-    name: "sentry_celery_worker"
-    image: "sentry:latest"
+- name: Correr celery workers
+  docker_container:
+    image: sentry:8
+    name: "sentry-worker-{{ item }}"
+    hostname: "sentry-worker-{{ item }}"
+    state: started
+    restart_policy: always
+    networks:
+      - name: sentry
     links:
-    - "sentry_redis"
-    - "sentry_postgres"
-    command: "sentry celery worker"
+    - sentry-redis:redis
+    - sentry-postgres:postgres
+    command: sentry run worker
     env:
-        SENTRY_SECRET_KEY: "{{ sentry_secret }}"
-        SENTRY_POSTGRES_HOST: sentry_postgres
-        SENTRY_DB_USER: "{{ sentry_postgres_dbuser }}"
-        SENTRY_DB_PASSWORD: "{{ sentry_postgres_dbpassword }}"
-        SENTRY_REDIS_HOST: sentry_redis
+      SENTRY_SECRET_KEY: "{{ sentry_secret }}"
+  with_sequence: count="{{sentry_workers_count}}"

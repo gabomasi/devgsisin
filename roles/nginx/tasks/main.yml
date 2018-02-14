@@ -15,7 +15,8 @@
     restart: true
     restart_policy: always
     volumes:
-    - "/data/nginx/etc/client_max_body_size.conf:/etc/nginx/conf.d/client_max_body_size.conf"
-    - "/data/nginx/etc/connection_header.conf:/etc/nginx/conf.d/connection_header.conf"
+        - "/var/run/docker.sock:/tmp/docker.sock:ro"
+        - "/data/nginx/etc/client_max_body_size.conf:/etc/nginx/conf.d/client_max_body_size.conf"
+        - "/data/nginx/etc/connection_header.conf:/etc/nginx/conf.d/connection_header.conf"
     ports:
     - "80:80"

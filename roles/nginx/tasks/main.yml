@@ -10,7 +10,7 @@
 - name: instalar_nginx_proxy
   docker_container:
     name: nginx_proxy
-    image: "jwilder/nginx-proxy"
+    image: "jwilder/nginx-proxy:alpine"
     state: started
     restart: true
     restart_policy: always

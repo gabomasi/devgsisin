@@ -1,0 +1,30 @@
+# ENV TZ=America/Argentina/Buenos_Aires
+# RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+# - name: Copiamos archivo de config
+#   template:
+#     dest: /data/prometheus/prometheus.yml
+#     src: prometheus.yml
+
+- name: Red para prometheus
+  docker_network:
+    name: prometheus
+    connected:
+      - nginx_proxy
+    force: yes
+
+- name: Instalar prometheus
+  docker_container:
+    name: prometheus
+    image: prom/prometheus:latest
+    hostname: prometheus-container-dev-tools
+    state: started
+    networks:
+      - name: prometheus
+    state: started
+    published_ports:
+      - "9090"
+    env:
+        VIRTUAL_HOST: prometheus.dev-tools.msgc.gcba
+        VIRTUAL_PORT: 9090
+    restart_policy: always

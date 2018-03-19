@@ -1,8 +1,20 @@
+- name: Creo network para que taiga pueda enviar mails
+  docker_network:
+    name: taiga
+    state: present
+    # ipam_options:
+    #   subnet: 10.47.4.0/22
+    connected:
+      - nginx_proxy
+    force: yes
+
 - name: instalar_taiga_db
   docker_container:
     name: taigadb
     image: postgres:9.5
     state: started
+    networks:
+      - name: taiga
     restart_policy: always
     volumes:
       - "{{ taiga_data_path }}/postgresql:/var/lib/postgresql/data"
@@ -16,9 +28,12 @@
     image: bartoszgadzala/taiga-back:3.1.0
     hostname: "{{ taiga_hostname }}"
     state: started
+    networks:
+      - name: taiga
+        # ipv4_address: 10.47.4.114
     restart_policy: always
     links:
-      - taigadb
+      - taigadb:postgres
     volumes:
       - "{{ taiga_data_path }}/media:/usr/local/taiga/media"
       - "{{ taiga_data_path }}/static:/usr/local/taiga/static"
@@ -45,6 +60,9 @@
     name: taigafront
     image: bartoszgadzala/taiga-front:3.1.0
     hostname: "{{ taiga_hostname }}"
+    networks:
+      - name: taiga
+        # ipv4_address: 10.47.4.115
     links:
       - taigaback
     volumes:

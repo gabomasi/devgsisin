@@ -12,9 +12,10 @@
     # - roles/phpmyadmin
     # - roles/polipo
     # - roles/host_goodies
-    # - roles/taiga
-    - roles/sentry
+    - roles/taiga
+    # - roles/sentry
     #  - roles/icinga
+    #  - roles/prometheus
   vars_files: ["group_vars/passwords.yml"]
   vars:
     sentry_create_user: false

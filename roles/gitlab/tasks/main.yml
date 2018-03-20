@@ -1,31 +1,48 @@
-# Opcional podría agregar esto: http://kanban.leanlabs.io/docs/installation/docker.html 
+# Opcional podría agregar esto: http://kanban.leanlabs.io/docs/installation/docker.html
+- name: Red para gitlab
+  docker_network:
+    name: gitlab
+    connected:
+      - nginx_proxy
+    force: yes
+
 - name: instalar_gitlab_postgres
-  docker:
-    name: "gitlab-postgresql"
-    image: "sameersbn/postgresql:9.4-12"
-    state: reloaded
+  docker_container:
+    name: gitlab-postgresql
+    image: sameersbn/postgresql:9.6-2
+    hostname: gitlab-postgresql
+    state: started
+    networks:
+      - name: gitlab
     volumes:
     - "/data/gitlab-postgresql:/var/lib/postgresql"
     env:
         DB_NAME: gitlabhq_production
         DB_USER: gitlab
         DB_PASS: "{{ redis_postgresql_db_password }}"
+        DB_EXTENSION: pg_trgm
     restart_policy: always
 
 - name: instalar_gitlab_redis
-  docker:
+  docker_container:
     name: "gitlab-redis"
     image: "sameersbn/redis:latest"
-    state: reloaded
+    hostname: gitlab-redis
+    state: started
+    networks:
+      - name: gitlab
     volumes:
     - "/data/gitlab-redis:/var/lib/redis"
     restart_policy: always
 
 - name: instalar_gitlab
-  docker:
-    name: "gitlab"
-    image: "sameersbn/gitlab:8.4.4"
-    state: reloaded
+  docker_container:
+    name: gitlab
+    image: sameersbn/gitlab:10.5.1
+    hostname: gitlab
+    state: started
+    networks:
+      - name: gitlab
     volumes:
     - "/data/gitlab-repos:/home/git/data"
     ports:
@@ -39,6 +56,8 @@
         GITLAB_HOST: gitlab.dev-tools.msgc.gcba
         GITLAB_SSH_PORT: 22
         GITLAB_SECRETS_DB_KEY_BASE: "{{ gitlab_secrets_db_key_base }}"
+        GITLAB_SECRETS_SECRET_KEY_BASE: "{{ gitlab_secrets_secret_key_base }}"
+        GITLAB_SECRETS_OTP_KEY_BASE: "{{ gitlab_secrets_otp_key_base }}"
         SMTP_DOMAIN: "{{ smtp_domain }}"
         SMTP_HOST: "{{ smtp_host }}"
         SMTP_PORT: "{{ smtp_port }}"
@@ -49,4 +68,3 @@
         VIRTUAL_HOST: gitlab.dev-tools.msgc.gcba
         VIRTUAL_PORT: 80
     restart_policy: always
-

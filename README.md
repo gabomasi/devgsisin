@@ -27,3 +27,7 @@ taigalocal
 ==========
 
 ansible-playbook -i hosts taigalocal.yml --ask-vault --extra-vars="{ 'taiga_data_path': 'PATH_TO_LOCAL_TAIGA_DATA' }"
+
+
+GITLAB
+======

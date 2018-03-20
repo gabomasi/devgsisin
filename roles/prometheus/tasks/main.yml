@@ -21,7 +21,6 @@
     state: started
     networks:
       - name: prometheus
-    state: started
     published_ports:
       - "9090"
     env:

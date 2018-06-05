@@ -59,6 +59,7 @@
   docker_container:
     name: taigafront
     image: bartoszgadzala/taiga-front:3.1.0
+    state: started
     hostname: "{{ taiga_hostname }}"
     networks:
       - name: taiga

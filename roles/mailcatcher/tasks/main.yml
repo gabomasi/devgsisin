@@ -3,10 +3,19 @@
     name: mailcatcher
     image: "tophfr/mailcatcher"
     state: started
-    restart: true
+    recreate: true
     restart_policy: always
-    env:
-        VIRTUAL_HOST: "mailcatcher.dev-apps.msgc.gcba"
-    ports:
-    - "1080:80"
-    - "1025:25"
+    labels:
+      traefik.docker.network: "mailcatcher_network"
+      traefik.frontend.rule: "Host: mailcatcher.dev-capacitacion.msgc.gcba"
+      traefik.enable: "true"
+      traefik.port: "80"
+
+
+- name: Crear red de mailcatcher
+  docker_network:
+    name: mailcatcher_network
+    state: present
+    connected:
+      - mailcatcher
+      - "reverse-proxy"

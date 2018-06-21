@@ -1,0 +1,19 @@
+- name: Copiar config de traefik
+  copy:
+    src: files/traefik.toml
+    dest: /data/traefik.toml
+
+- name: Traefik - Reverse proxy
+  docker_container:
+    name: reverse-proxy
+    image: traefik:alpine
+    state: started
+    recreate: true
+    restart_policy: always
+    command: --api --docker # Enables the web UI and tells Træfik to listen to docker
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /data/traefik.toml:/etc/traefik/traefik.toml
+    ports:
+      - "80:80"     # The HTTP port
+      - "8080:8080" # The Web UI (enabled by --api)

@@ -1,0 +1,17 @@
+---
+- hosts: capacitacion
+  become_user: root
+  user: root
+  gather_facts: true
+  roles:
+    # - roles/docker
+    # - role: angstwad.docker_ubuntu
+    #   daemon_json:
+    #     data-root: /data/docker
+    #     insecure-registries:
+    #       - registry.dev-tools.msgc.gcba
+    #     bip: "198.19.0.0/15"
+    #     fixed-cidr: "198.19.0.0/16"
+    #   update_docker_package: true
+    - roles/traefik
+    - roles/mailcatcher

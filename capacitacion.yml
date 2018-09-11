@@ -13,5 +13,5 @@
     #     bip: "198.19.0.0/15"
     #     fixed-cidr: "198.19.0.0/16"
     #   update_docker_package: true
-    - roles/traefik
+    - roles/nginx
     - roles/mailcatcher

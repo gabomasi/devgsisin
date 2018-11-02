@@ -7,6 +7,32 @@
 - name: copio_configuracion_header
   copy: src="files/connection_header.conf" dest="/data/nginx/etc/connection_header.conf"
 
+- name: creo carpeta para  certs TLS self-signed
+  file:
+    path: /data/nginx/keys/
+    state: directory
+
+- name: instalo PyOpenSSL>=0.15
+  pip:
+    name: PyOpenSSL>=0.15
+
+- name: genero la clave privada para OpenSSL
+  openssl_privatekey:
+    path: /data/nginx/keys/dev-apps.msgc.gcba.key
+
+- name: genero solicitud para el certificado ssl
+  openssl_csr:
+    path: /data/nginx/keys/dev-apps.msgc.gcba.csr
+    privatekey_path: /data/nginx/keys/dev-apps.msgc.gcba.key
+    common_name: "*.dev-apps.msgc.gcba"
+
+- name: genero certificado Self Signed OpenSSL
+  openssl_certificate:
+    path: /data/nginx/keys/dev-apps.msgc.gcba.crt
+    csr_path: /data/nginx/keys/dev-apps.msgc.gcba.csr
+    privatekey_path: /data/nginx/keys/dev-apps.msgc.gcba.key
+    provider: selfsigned
+
 - name: instalar_nginx_proxy
   docker_container:
     name: "reverse-proxy"
@@ -15,8 +41,10 @@
     restart: true
     restart_policy: always
     volumes:
+        - "/data/nginx/keys:/etc/nginx/certs"
         - "/var/run/docker.sock:/tmp/docker.sock:ro"
         - "/data/nginx/etc/client_max_body_size.conf:/etc/nginx/conf.d/client_max_body_size.conf"
         - "/data/nginx/etc/connection_header.conf:/etc/nginx/conf.d/connection_header.conf"
     ports:
     - "80:80"
+    - "443:443"

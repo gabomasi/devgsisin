@@ -25,7 +25,7 @@
 - name: instalar_taiga_back
   docker_container:
     name: taigaback
-    image: rayser/taigaback
+    image: rayser/taigaback:4.0.0
     hostname: "{{ taiga_hostname }}"
     state: started
     networks:
@@ -68,7 +68,7 @@
 - name: instalar_taiga_front
   docker_container:
     name: taigafront
-    image: rayser/taigafront
+    image: rayser/taigafront:4.0.0
     state: started
     hostname: "{{ taiga_hostname }}"
     networks:

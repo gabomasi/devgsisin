@@ -22,17 +22,10 @@
         POSTGRES_USER: "{{ taiga_postgres_user }}"
         POSTGRES_PASSWORD: "{{ taiga_postgres_password }}"
 
-- name: Buildeo imagen back taiga
-  docker_image:
-     path: "{{ role_path }}/files/taigaback/"
-     name: taigaback
-     state: present
-     pull: no
-
 - name: instalar_taiga_back
   docker_container:
     name: taigaback
-    image: taigaback
+    image: rayser/taigaback
     hostname: "{{ taiga_hostname }}"
     state: started
     networks:
@@ -63,19 +56,19 @@
       POSTGRES_PASSWORD: "{{ taiga_postgres_password }}"
 
 
-
-- name: Buildeo imagen front taiga
-  docker_image:
-     path: "{{ role_path }}/files/taigafront/"
-     name: taigafront
-     state: present
-     pull: no
+# Solo para uso local
+# - name: Buildeo imagen front taiga
+#   docker_image:
+#      path: "{{ role_path }}/files/taigafront/"
+#      name: taigafront
+#      state: present
+#      pull: no
 
 
 - name: instalar_taiga_front
   docker_container:
     name: taigafront
-    image: taigafront
+    image: rayser/taigafront
     state: started
     hostname: "{{ taiga_hostname }}"
     networks:

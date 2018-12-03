@@ -1,2 +1,3 @@
+taiga_data_path: /data/taiga_data
 taiga_hostname: localhost
-taiga_front_port: "80:"
+taiga_front_port: ""

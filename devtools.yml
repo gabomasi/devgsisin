@@ -7,13 +7,14 @@
     # - roles/docker
     # - { role: angstwad.docker_ubuntu, docker_opts: '-g /data/docker' }
     # - roles/docker_registry
-    # - roles/nginx
+    # roles/nginx
     # - roles/gitlab
     # - roles/phpmyadmin
     # - roles/polipo
     # - roles/host_goodies
     # - roles/taiga
-    - roles/sentry
+    - roles/taiga
+    # - roles/sentry
     # - roles/icinga
     # - roles/prometheus
   vars_files: ["group_vars/passwords.yml"]

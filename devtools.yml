@@ -7,7 +7,7 @@
     # - roles/docker
     # - { role: angstwad.docker_ubuntu, docker_opts: '-g /data/docker' }
     # - roles/docker_registry
-    # roles/nginx
+    - roles/nginx
     # - roles/gitlab
     # - roles/phpmyadmin
     # - roles/polipo
@@ -17,7 +17,7 @@
     # - roles/sentry
     # - roles/icinga
     # - roles/prometheus
-  vars_files: ["group_vars/passwords.yml"]
-  vars:
-    sentry_create_user: false
-    sentry_workers_count: 2
+  vars_files: ["group_vars/passwords.yml", "group_vars/devtools"]
+  # vars:
+  #   sentry_create_user: false
+  #   sentry_workers_count: 2

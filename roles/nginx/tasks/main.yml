@@ -18,19 +18,19 @@
 
 - name: genero la clave privada para OpenSSL
   openssl_privatekey:
-    path: /data/nginx/keys/dev-apps.msgc.gcba.key
+    path: /data/nginx/keys/{{ hostname }}.key
 
 - name: genero solicitud para el certificado ssl
   openssl_csr:
-    path: /data/nginx/keys/dev-apps.msgc.gcba.csr
-    privatekey_path: /data/nginx/keys/dev-apps.msgc.gcba.key
-    common_name: "*.dev-apps.msgc.gcba"
+    path: /data/nginx/keys/{{ hostname }}.csr
+    privatekey_path: /data/nginx/keys/{{ hostname }}.key
+    common_name: "*.{{ hostname }}"
 
 - name: genero certificado Self Signed OpenSSL
   openssl_certificate:
-    path: /data/nginx/keys/dev-apps.msgc.gcba.crt
-    csr_path: /data/nginx/keys/dev-apps.msgc.gcba.csr
-    privatekey_path: /data/nginx/keys/dev-apps.msgc.gcba.key
+    path: /data/nginx/keys/{{ hostname }}.crt
+    csr_path: /data/nginx/keys/{{ hostname }}.csr
+    privatekey_path: /data/nginx/keys/{{ hostname }}.key
     provider: selfsigned
 
 - name: instalar_nginx_proxy

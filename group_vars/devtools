@@ -2,3 +2,6 @@ hostname: dev-tools.msgc.gcba
 taiga_data_path: /data/taiga_data
 taiga_hostname: taiga.dev-tools.msgc.gcba
 taiga_front_port:
+taigalgc_data_path: /data/taigalgc_data
+taigalgc_hostname: taigalgc.dev-tools.msgc.gcba
+taigalgc_front_port:

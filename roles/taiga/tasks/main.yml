@@ -40,6 +40,7 @@
       - "{{ taiga_data_path }}/logs:/usr/local/taiga/logs"
     env:
       HOSTNAME: "{{ taiga_hostname }}"
+      API_SCHEME: "https"
       SECRET_KEY: Un1c0rns_4r3_4w3s0m3
       DEBUG: "False"
       EMAIL_USE_TLS: "True"

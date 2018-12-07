@@ -1,3 +1,3 @@
 taiga_data_path: /data/taiga_data
-taiga_hostname: localhost
+taiga_hostname: taiga.dev-tools.msgc.gcba
 taiga_front_port: ""

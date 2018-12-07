@@ -33,6 +33,14 @@
     privatekey_path: /data/nginx/keys/{{ hostname }}.key
     provider: selfsigned
 
+
+- name: copio_configuracion_nginx_por_host
+  copy: src="files/vhost.d/" dest="/data/nginx/etc/vhost.d/"
+
+- name: copio_configuracion_nginx_general
+  copy: src="files/my_conf.conf" dest="/data/nginx/etc/my_conf.conf"
+
+
 - name: instalar_nginx_proxy
   docker_container:
     name: "reverse-proxy"
@@ -45,6 +53,8 @@
         - "/var/run/docker.sock:/tmp/docker.sock:ro"
         - "/data/nginx/etc/client_max_body_size.conf:/etc/nginx/conf.d/client_max_body_size.conf"
         - "/data/nginx/etc/connection_header.conf:/etc/nginx/conf.d/connection_header.conf"
+        - "/data/nginx/etc/my_conf.conf:/etc/nginx/conf.d/my_conf.conf"
+        - "/data/nginx/etc/vhost.d/:/etc/nginx/vhost.d"
     ports:
     - "80:80"
     - "443:443"

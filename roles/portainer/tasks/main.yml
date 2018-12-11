@@ -1,0 +1,43 @@
+- name: Red para portainer
+  docker_network:
+    name: portainer
+    state: present
+    connected:
+      - reverse-proxy
+    force: yes
+
+- name: installar templates portainer
+  docker_container:
+    name: "portainer-templates"
+    image: portainer/templates
+    state: started
+    networks:
+      - name: portainer
+    restart_policy: always
+
+- name: instalar portainer watchtower
+  docker_container:
+    name: "portainer-watchtower"
+    image: v2tec/watchtower
+    command: --cleanup portainer-app portainer-watchtower portainer/templates
+    state: started
+    networks:
+      - name: portainer
+    volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+
+- name: instalar portainer
+  docker_container:
+    hostname: portainer
+    name: "portainer-app"
+    image: portainer/portainer
+    command: --templates http://templates/templates.json
+    state: started
+    networks:
+      - name: portainer
+    restart_policy: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /opt/portainer/data:/data
+    env:
+        VIRTUAL_HOST: "{{ portainer_hostname }}"

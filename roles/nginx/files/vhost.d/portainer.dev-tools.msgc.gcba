@@ -1,0 +1,6 @@
+# Para el throttle
+# limit_req zone=my_zone;
+
+proxy_set_header Connection $http_connection;
+proxy_set_header Upgrade $http_upgrade;
+proxy_set_header Connection "upgrade";

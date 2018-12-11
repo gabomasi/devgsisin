@@ -1,4 +1,5 @@
 hostname: dev-tools.msgc.gcba
 taiga_data_path: /data/taiga_data
 taiga_hostname: taiga.dev-tools.msgc.gcba
+portainer_hostname: portainer.dev-tools.msgc.gcba
 taiga_front_port:

@@ -1,5 +1,5 @@
 ---
-- hosts: local
+- hosts: devtools
   become_user: root
   user: root
   gather_facts: true
@@ -7,13 +7,14 @@
     # - roles/docker
     # - { role: angstwad.docker_ubuntu, docker_opts: '-g /data/docker' }
     # - roles/docker_registry
-    - roles/nginx
+    # - roles/nginx
     # - roles/gitlab
     # - roles/phpmyadmin
     # - roles/polipo
     # - roles/host_goodies
     # - roles/taiga
-    - roles/taiga
+    # - roles/taiga
+    - roles/portainer
     # - roles/sentry
     # - roles/icinga
     # - roles/prometheus

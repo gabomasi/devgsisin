@@ -13,7 +13,8 @@
     # - roles/polipo
     # - roles/host_goodies
     # - roles/taiga
-    - roles/taigalgc
+    # - roles/taigalgc
+    - roles/portainer
     # - roles/sentry
     # - roles/icinga
     # - roles/prometheus

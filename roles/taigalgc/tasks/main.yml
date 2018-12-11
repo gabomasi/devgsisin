@@ -1,6 +1,6 @@
 - name: Creo network para que taiga pueda enviar mails
   docker_network:
-    name: taiga
+    name: taigalgc
     state: present
     # ipam_options:
     #   subnet: 10.47.4.0/22
@@ -10,37 +10,36 @@
 
 - name: instalar_taiga_db
   docker_container:
-    name: taigadb
+    name: taigadblgc
     image: postgres:9.5
     state: started
     networks:
-      - name: taiga
+      - name: taigalgc
     restart_policy: always
     volumes:
-      - "{{ taiga_data_path }}/postgresql:/var/lib/postgresql/data"
+      - "{{ taigalgc_data_path }}/postgresql:/var/lib/postgresql/data"
     env:
         POSTGRES_USER: "{{ taiga_postgres_user }}"
         POSTGRES_PASSWORD: "{{ taiga_postgres_password }}"
 
 - name: instalar_taiga_back
   docker_container:
-    name: taigaback
-    image: rayser/taigaback:4.0.0
-    hostname: "{{ taiga_hostname }}"
+    name: taigabacklgc
+    image: bartoszgadzala/taiga-back:3.1.0
+    hostname: "{{ taigalgc_hostname }}"
     state: started
     networks:
-      - name: taiga
+      - name: taigalgc
         # ipv4_address: 10.47.4.114
     restart_policy: always
     links:
-      - taigadb:postgres
+      - taigadblgc:postgres
     volumes:
-      - "{{ taiga_data_path }}/media:/usr/local/taiga/media"
-      - "{{ taiga_data_path }}/static:/usr/local/taiga/static"
-      - "{{ taiga_data_path }}/logs:/usr/local/taiga/logs"
+      - "{{ taigalgc_data_path }}/media:/usr/local/taiga/media"
+      - "{{ taigalgc_data_path }}/static:/usr/local/taiga/static"
+      - "{{ taigalgc_data_path }}/logs:/usr/local/taiga/logs"
     env:
-      HOSTNAME: "{{ taiga_hostname }}"
-      API_SCHEME: "https"
+      HOSTNAME: "{{ taigalgc_hostname }}"
       SECRET_KEY: Un1c0rns_4r3_4w3s0m3
       DEBUG: "False"
       EMAIL_USE_TLS: "True"
@@ -51,39 +50,29 @@
       EMAIL_HOST_PASSWORD: "{{ smtp_pass }}"
       DEFAULT_FROM_EMAIL: "{{ default_email_reply_to }}"
       POSTGRES_DB_NAME: taiga
-      POSTGRES_HOST: taigadb
+      POSTGRES_HOST: taigadblgc
       POSTGRES_PORT: 5432
       POSTGRES_USER: "{{ taiga_postgres_user }}"
       POSTGRES_PASSWORD: "{{ taiga_postgres_password }}"
 
-
-# Solo para uso local
-# - name: Buildeo imagen front taiga
-#   docker_image:
-#      path: "{{ role_path }}/files/taigafront/"
-#      name: taigafront
-#      state: present
-#      pull: no
-
-
 - name: instalar_taiga_front
   docker_container:
-    name: taigafront
-    image: rayser/taigafront:4.0.0
+    name: taigafrontlgc
+    image: bartoszgadzala/taiga-front:3.1.0
     state: started
-    hostname: "{{ taiga_hostname }}"
+    hostname: "{{ taigalgc_hostname }}"
     networks:
-      - name: taiga
+      - name: taigalgc
         # ipv4_address: 10.47.4.115
     links:
-      - taigaback
+      - taigabacklgc
     volumes:
-      - "{{ taiga_data_path }}/media:/usr/local/taiga/media"
-      - "{{ taiga_data_path }}/static:/usr/local/taiga/static"
+      - "{{ taigalgc_data_path }}/media:/usr/local/taiga/media"
+      - "{{ taigalgc_data_path }}/static:/usr/local/taiga/static"
     restart_policy: always
     ports:
-    - "{{ taiga_front_port }}80"
+    - "{{ taigalgc_front_port }}80"
     env:
         DEFAULT_LANGUAGE: es
-        VIRTUAL_HOST: "{{ taiga_hostname }}"
-        TAIGABACK_PORT_8000_TCP_ADDR: taigaback
+        VIRTUAL_HOST: "{{ taigalgc_hostname }}"
+        TAIGABACK_PORT_8000_TCP_ADDR: taigabacklgc

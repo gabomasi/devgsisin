@@ -6,3 +6,4 @@ taiga_front_port:
 taigalgc_data_path: /data/taigalgc_data
 taigalgc_hostname: taigalgc.dev-tools.msgc.gcba
 taigalgc_front_port:
+sentry_workers_count: 2

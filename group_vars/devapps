@@ -1,2 +1,3 @@
 hostname: dev-apps.msgc.gcba
 portainer_hostname: portainer.dev-apps.msgc.gcba
+mailcatcher_hostname: mailcatcher.dev-apps.msgc.gcba

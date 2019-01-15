@@ -1,3 +1,12 @@
+- name: Red para mailcatcher
+  docker_network:
+    name: mailcatcher_network
+    state: present
+    connected:
+      - reverse-proxy
+    force: yes
+
+
 - name: Instalar mailcatcher
   docker_container:
     name: mailcatcher
@@ -5,17 +14,13 @@
     state: started
     recreate: true
     restart_policy: always
-    labels:
-      traefik.docker.network: "mailcatcher_network"
-      traefik.frontend.rule: "Host: mailcatcher.dev-capacitacion.msgc.gcba"
-      traefik.enable: "true"
-      traefik.port: "80"
-
-
-- name: Crear red de mailcatcher
-  docker_network:
-    name: mailcatcher_network
-    state: present
-    connected:
-      - mailcatcher
-      - "reverse-proxy"
+    networks:
+      - name: mailcatcher_network
+    ports: "1080:80"
+    env:
+      VIRTUAL_HOST: "{{ mailcatcher_hostname }}"
+    # labels:
+    #   traefik.docker.network: "mailcatcher_network"
+    #   traefik.frontend.rule: "Host: mailcatcher.dev-capacitacion.msgc.gcba"
+    #   traefik.enable: "true"
+    #   traefik.port: "80"

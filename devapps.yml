@@ -14,6 +14,6 @@
     #     fixed-cidr: "198.19.0.0/16"
     #   update_docker_package: true
     # - roles/nginx
-    - roles/portainer
-    # - roles/mailcatcher
+    # - roles/portainer
+    - roles/mailcatcher
   vars_files: ["group_vars/passwords.yml", "group_vars/devapps"]

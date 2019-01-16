@@ -7,3 +7,4 @@ taigalgc_data_path: /data/taigalgc_data
 taigalgc_hostname: taigalgc.dev-tools.msgc.gcba
 taigalgc_front_port:
 sentry_workers_count: 2
+flower_hostname: flower.dev-tools.msgc.gcba

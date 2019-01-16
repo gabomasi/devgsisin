@@ -1,0 +1,15 @@
+- name: Run FLOWER container
+  docker_container:
+    image: mher/flower:0.9
+    name: "flower"
+    restart_policy: always
+    state: started
+    command: flower -l info
+    restart: true
+    ports:
+      - "5555"
+    env:
+      VIRTUAL_HOST: "{{ flower_hostname }}"
+      VIRTUAL_PORT: 5555
+      CELERY_BROKER_URL: amqp://{{rabbitmq_user}}:{{rabbitmq_pass}}@10.48.2.210:5672//
+      FLOWER_BASIC_AUTH: "{{flower_user}}:{{flower_pass}}"

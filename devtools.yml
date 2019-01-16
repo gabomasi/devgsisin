@@ -15,9 +15,10 @@
     # - roles/taiga
     # - roles/taigalgc
     # - roles/portainer
-    - roles/sentry
+    # - roles/sentry
     # - roles/icinga
     # - roles/prometheus
+    - roles/flower
   vars_files: ["group_vars/passwords.yml", "group_vars/devtools"]
   # vars:
   #   sentry_create_user: false

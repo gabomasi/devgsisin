@@ -8,3 +8,5 @@ taigalgc_hostname: taigalgc.dev-tools.msgc.gcba
 taigalgc_front_port:
 sentry_workers_count: 2
 flower_hostname: flower.dev-tools.msgc.gcba
+rabbitmq_host: app-srv01-preprod.msgc.gcba
+rabbitmq_port: 5672

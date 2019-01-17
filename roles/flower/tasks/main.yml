@@ -11,5 +11,5 @@
     env:
       VIRTUAL_HOST: "{{ flower_hostname }}"
       VIRTUAL_PORT: 5555
-      CELERY_BROKER_URL: amqp://{{rabbitmq_user}}:{{rabbitmq_pass}}@10.48.2.210:5672//
+      CELERY_BROKER_URL: amqp://{{rabbitmq_user}}:{{rabbitmq_pass}}@{{rabbitmq_host}}:{{rabbitmq_port}}//
       FLOWER_BASIC_AUTH: "{{flower_user}}:{{flower_pass}}"

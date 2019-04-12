@@ -8,10 +8,10 @@
   copy: src="files/config-dbservers.php" dest="/data/phpmyadmin/etc/config-dbservers.php"
 
 - name: instalar_phpmyadmin
-  docker:
+  docker_container:
     name: phpmyadmin
     image: "wnameless/mysql-phpmyadmin:latest"
-    state: reloaded
+    state: started
     ports:
     - "8003:80"
     volumes:

@@ -1,5 +1,5 @@
 <?php
-$hospitales = array('sigehos-db-master.hml.gcba.gob.ar', 'sgutierrez.msgc.gcba:3306', 'stprotegidos.msgc.gcba:3306', 'sudaondo.msgc.gcba:3306', 'smoyano.msgc.gcba:3306', 'ssarda.msgc.gcba:3306', 'slagleyze.msgc.gcba:3306',  'sduenas.msgc.gcba:3306', 'smuniz.msgc.gcba:3306', 'ssantalucia.msgc.gcba:3306', 'srivadavia.msgc.gcba:3306', 'sdurand.msgc.gcba:3306', 'sramosmejia.msgc.gcba:3306', 'svelez.msgc.gcba:3306', 'ssantojanni.msgc.gcba:3306', 'stornu.msgc.gcba:3306', 'spirovano.msgc.gcba:3306', 'ssame.msgc.gcba:3306', 'sargerich.msgc.gcba:3306', '10.10.6.187:3306');
+$hospitales = array('sigehos-db-master.hml.gcba.gob.ar', 'sgutierrez.msgc.gcba:3306', 'stprotegidos.msgc.gcba:3306', 'sudaondo.msgc.gcba:3306', 'smoyano.msgc.gcba:3306', 'ssarda.msgc.gcba:3306', 'slagleyze.msgc.gcba:3306',  'sduenas.msgc.gcba:3306', 'smuniz.msgc.gcba:3306', 'ssantalucia.msgc.gcba:3306', 'srivadavia.msgc.gcba:3306', 'sdurand.msgc.gcba:3306', 'sramosmejia.msgc.gcba:3306', 'svelez.msgc.gcba:3306', 'ssantojanni.msgc.gcba:3306', 'stornu.msgc.gcba:3306', 'spirovano.msgc.gcba:3306', 'ssame.msgc.gcba:3306', 'sargerich.msgc.gcba:3306', '10.10.6.187:3306', '10.47.4.141:3306');
 
 //'10.47.4.242:3311', '10.47.4.242:3312', '10.47.4.233:3306','10.48.0.116');
 

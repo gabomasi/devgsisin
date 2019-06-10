@@ -8,5 +8,6 @@ taigalgc_hostname: taigalgc.dev-tools.msgc.gcba
 taigalgc_front_port:
 sentry_workers_count: 2
 flower_hostname: flower.dev-tools.msgc.gcba
-rabbitmq_host: app-srv01-preprod.msgc.gcba
-rabbitmq_port: 5672
+redis_stat_hostname: redis-stat.dev-tools.msgc.gcba
+redis_host: 10.10.7.172
+redis_port: 6379

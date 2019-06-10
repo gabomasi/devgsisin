@@ -1,0 +1,26 @@
+- name: Red para redis_stat
+  docker_network:
+    name: redis_stat_network
+    state: present
+    connected:
+      - reverse-proxy
+    force: yes
+
+
+- name: Instalar redis_stat
+  docker_container:
+    name: "sigehos_redis_stat"
+    image: "insready/redis-stat"
+    state: started
+    recreate: true
+    restart_policy: always
+    command: "{{ redis_host }}:{{ redis_port }} --auth={{ redis_pass }} --server=80"
+    networks:
+      - name: "redis_stat_network"
+    env:
+      VIRTUAL_HOST: "{{ redis_stat_hostname }}"
+    # labels:
+    #   traefik.docker.network: "mailcatcher_network"
+    #   traefik.frontend.rule: "Host: mailcatcher.dev-capacitacion.msgc.gcba"
+    #   traefik.enable: "true"
+    #   traefik.port: "80"

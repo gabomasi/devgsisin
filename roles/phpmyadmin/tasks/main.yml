@@ -10,10 +10,13 @@
 - name: instalar_phpmyadmin
   docker_container:
     name: phpmyadmin
-    image: "wnameless/mysql-phpmyadmin:latest"
+    image: "phpmyadmin/phpmyadmin:latest"
     state: started
-    ports:
-    - "8003:80"
+    recreate: true
+    memory: 100m
+    exposed_ports: 80
+    published_ports:
+        - "80"
     volumes:
     - "/data/phpmyadmin/etc/config-dbservers.php:/etc/phpmyadmin/config-dbservers.php"
     - "/data/phpmyadmin/etc/config.inc.php:/etc/phpmyadmin/config.inc.php"

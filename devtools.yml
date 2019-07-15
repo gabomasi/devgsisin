@@ -7,9 +7,9 @@
     # - roles/docker
     # - { role: angstwad.docker_ubuntu, docker_opts: '-g /data/docker' }
     # - roles/docker_registry
-    - roles/nginx
+    # - roles/nginx
     # - roles/gitlab
-    # - roles/phpmyadmin
+    - roles/phpmyadmin
     # - roles/polipo
     # - roles/host_goodies
     # - roles/taiga

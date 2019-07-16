@@ -1,25 +1,28 @@
-- name: aseguro_directorio_data_pyhpmyadmin_existe
-  file: path=/data/phpmyadmin/etc state=directory
-
-- name: copio_archivo_configuracion_phpmyadmin_1
-  copy: src="files/config.inc.php" dest="/data/phpmyadmin/etc/config.inc.php"
-
-- name: copio_archivo_configuracion_phpmyadmin_2
-  copy: src="files/config-dbservers.php" dest="/data/phpmyadmin/etc/config-dbservers.php"
+# - name: aseguro_directorio_data_pyhpmyadmin_existe
+#   file: path=/data/phpmyadmin/etc state=directory
+#
+# - name: copio_archivo_configuracion_phpmyadmin_1
+#   copy: src="files/config.inc.php" dest="/data/phpmyadmin/etc/config.inc.php"
+#
+# - name: copio_archivo_configuracion_phpmyadmin_2
+#   copy: src="files/config-dbservers.php" dest="/data/phpmyadmin/etc/config-dbservers.php"
 
 - name: instalar_phpmyadmin
   docker_container:
     name: phpmyadmin
-    image: "phpmyadmin/phpmyadmin:latest"
+    image: "phpmyadmin/phpmyadmin:4.7"
     state: started
     recreate: true
     memory: 100m
     exposed_ports: 80
     published_ports:
         - "80"
-    volumes:
-    - "/data/phpmyadmin/etc/config-dbservers.php:/etc/phpmyadmin/config-dbservers.php"
-    - "/data/phpmyadmin/etc/config.inc.php:/etc/phpmyadmin/config.inc.php"
+    # volumes:
+    # - "/data/phpmyadmin/etc/config-dbservers.php:/etc/phpmyadmin/config-dbservers.php"
+    # - "/data/phpmyadmin/etc/config.inc.php:/etc/phpmyadmin/config.inc.php"
     env:
         VIRTUAL_HOST: phpmyadmin.dev-tools.msgc.gcba
+        PMA_HOSTS: 10.10.6.187,10.47.4.141
+        PMA_PORTS: 3306,3306
+        PMA_VERBOSES: Producción,Pre-Prod
     restart_policy: always

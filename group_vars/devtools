@@ -9,5 +9,5 @@ taigalgc_front_port:
 sentry_workers_count: 2
 flower_hostname: flower.dev-tools.msgc.gcba
 redis_stat_hostname: redis-stat.dev-tools.msgc.gcba
-redis_host: 10.10.7.172
+redis_host: redis-srv01-preprod.msgc.gcba
 redis_port: 6379

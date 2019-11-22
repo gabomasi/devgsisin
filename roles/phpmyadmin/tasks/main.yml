@@ -22,7 +22,7 @@
     # - "/data/phpmyadmin/etc/config.inc.php:/etc/phpmyadmin/config.inc.php"
     env:
         VIRTUAL_HOST: phpmyadmin.dev-tools.msgc.gcba
-        PMA_HOSTS: 10.10.6.187,10.47.4.141
+        PMA_HOSTS: 10.10.6.187,10.47.4.141,10.9.5.102
+        PMA_VERBOSES: Producción,Pre-Prod,Balanced-Pre-Prod
         PMA_PORTS: 3306,3306
-        PMA_VERBOSES: Producción,Pre-Prod
     restart_policy: always

@@ -9,10 +9,10 @@
     # - roles/docker_registry
     # - roles/nginx
     # - roles/gitlab
-    - roles/phpmyadmin
+    # - roles/phpmyadmin
     # - roles/polipo
     # - roles/host_goodies
-    # - roles/taiga
+    - roles/taiga
     # - roles/taigalgc
     # - roles/portainer
     # - roles/sentry

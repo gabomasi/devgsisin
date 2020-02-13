@@ -3,7 +3,7 @@
   docker_network:
     name: gitlab
     connected:
-      - nginx_proxy
+      - reverse-proxy
     force: yes
 
 - name: instalar_gitlab_postgres

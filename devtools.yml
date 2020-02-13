@@ -8,18 +8,17 @@
     # - { role: angstwad.docker_ubuntu, docker_opts: '-g /data/docker' }
     # - roles/docker_registry
     # - roles/nginx
-    # - roles/gitlab
+    - roles/gitlab
     # - roles/phpmyadmin
     # - roles/polipo
     # - roles/host_goodies
-    - roles/taiga
+    # - roles/taiga
     # - roles/taigalgc
     # - roles/portainer
     # - roles/sentry
     # - roles/icinga
     # - roles/prometheus
     # - roles/flower
-    # - roles/redis_stat
   vars_files: ["group_vars/passwords.yml", "group_vars/devtools"]
   # vars:
   #   sentry_create_user: false
